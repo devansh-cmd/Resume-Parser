@@ -11,7 +11,8 @@
     "test:watch": "jest --watch",
     "dev:frontend": "vite",
     "build:frontend": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:agent": "ts-node src/agentic/index.ts"
   },
   "keywords": ["ai", "recruitment", "resume", "screening", "agent"],
   "author": "R1 Agent Team",
@@ -20,7 +21,12 @@
     "typescript": "^5.0.0",
     "ts-node": "^10.9.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xlsx": "^0.18.5",
+    "openai": "^4.20.1",
+    "langchain": "^0.0.200",
+    "@langchain/openai": "^0.0.14",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

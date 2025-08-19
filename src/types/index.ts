@@ -23,6 +23,76 @@ export interface StructuredResumeInput {
 
 export type ResumeInput = RawResumeInput | StructuredResumeInput;
 
+// Excel Job Description types
+export interface ExcelJobDescription {
+  id: string;
+  title: string;
+  company: string;
+  department?: string;
+  location?: string;
+  description: string;
+  requirements: string;
+  minimumExperience?: number;
+  requiredSkills?: string[];
+  preferredSkills?: string[];
+  education?: string;
+  salary?: string;
+  employmentType?: string;
+}
+
+export interface ExcelProcessingResult {
+  jobDescriptions: ExcelJobDescription[];
+  errors: string[];
+  totalRows: number;
+  processedRows: number;
+}
+
+// Chatbot types
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+  metadata?: {
+    candidateId?: string;
+    jobId?: string;
+    screeningResult?: ScreeningResult;
+  };
+}
+
+export interface ChatSession {
+  id: string;
+  messages: ChatMessage[];
+  candidateProfile?: ParsedResume;
+  jobDescription?: ExcelJobDescription;
+  screeningResult?: ScreeningResult;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ChatbotResponse {
+  message: string;
+  confidence: number;
+  reasoning?: string;
+  suggestedQuestions?: string[];
+}
+
+// LLM Integration types
+export interface LLMConfig {
+  provider: 'openai' | 'anthropic' | 'local';
+  model: string;
+  apiKey?: string;
+  temperature?: number;
+  maxTokens?: number;
+}
+
+export interface LLMContext {
+  candidateProfile: ParsedResume;
+  jobDescription: ExcelJobDescription;
+  screeningResult: ScreeningResult;
+  chatHistory: ChatMessage[];
+}
+
 // Parsed resume data structure
 export interface ParsedResume {
   fullName: string;
@@ -109,7 +179,7 @@ export interface ExtractedFeatures {
 
 // Error types for logging
 export interface ProcessingError {
-  type: 'parsing' | 'extraction' | 'evaluation';
+  type: 'parsing' | 'extraction' | 'evaluation' | 'excel' | 'llm';
   message: string;
   details?: any;
   timestamp: Date;
