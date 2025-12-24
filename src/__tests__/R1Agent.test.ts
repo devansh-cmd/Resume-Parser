@@ -348,7 +348,7 @@ describe('R1 Agent Tests', () => {
       const result = await agent.runR1(rawResumeInput, jobRequirements);
 
       expect(result.screeningResult).toBe('fail');
-      expect(result.missingRequirements[1]).toContain('Missing required skills:');
+      expect(result.missingRequirements![1]).toContain('Missing required skills:');
     });
   });
 
