@@ -1,6 +1,6 @@
 # 📄 Resume-Parser: Intelligent Recruitment Agent
 
-![Resume Parser Demo](./resume_parser_demo.png)
+![Resume Parser Demo](./resume_parser_demo_1766534501192.png)
 
 > **"From raw resumes to structured intelligence in seconds."**
 
@@ -76,7 +76,7 @@ The R1 Agent spits out a standardized JSON schema ready for any ATS integration:
 ---
 
 ## 🔗 Live Demo
-[View Live Demo (Coming Soon)](#) | [Documentation](./docs)
+**Hosted on Streamlit; drop any resume PDF, get JSON back.**
 
 ---
 
