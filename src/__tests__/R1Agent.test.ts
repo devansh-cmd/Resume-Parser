@@ -31,7 +31,7 @@ describe('R1 Agent Tests', () => {
       `;
 
       const result = parseResume(rawText);
-      
+
       expect(result.fullName).toBe('John Doe');
       expect(result.email).toBe('john.doe@email.com');
       expect(result.phone).toBe('5551234567');
@@ -64,7 +64,7 @@ describe('R1 Agent Tests', () => {
       };
 
       const result = parseResume(structuredData);
-      
+
       expect(result.fullName).toBe('Jane Smith');
       expect(result.email).toBe('jane.smith@email.com');
       expect(result.education.length).toBe(1);
@@ -348,7 +348,7 @@ describe('R1 Agent Tests', () => {
       const result = await agent.runR1(rawResumeInput, jobRequirements);
 
       expect(result.screeningResult).toBe('fail');
-      expect(result.missingRequirements).toContain('Missing required skills');
+      expect(result.missingRequirements[1]).toContain('Missing required skills:');
     });
   });
 
@@ -398,7 +398,7 @@ describe('R1 Agent Tests', () => {
   describe('Agent Status', () => {
     test('should return agent status information', () => {
       const status = agent.getAgentStatus();
-      
+
       expect(status.agent).toBe('R1 - Resume Screening Agent');
       expect(status.version).toBe('1.0.0');
       expect(status.status).toBe('active');
