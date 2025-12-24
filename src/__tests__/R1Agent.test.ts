@@ -190,7 +190,7 @@ describe('R1 Agent Tests', () => {
           - Used Node.js for backend services
           
           SKILLS
-          JavaScript, React, Node.js, SQL, TypeScript
+          Technical Skills: JavaScript, React, Node.js, SQL, TypeScript
         `
       };
 
