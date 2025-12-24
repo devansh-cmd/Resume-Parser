@@ -1,4 +1,4 @@
-# 📄 Resume-Parser: Intelligent Recruitment Agent
+# Resume-Parser: Intelligent Recruitment Agent
 
 ![Resume Parser Demo](./resume_parser_demo_1766534501192.png)
 
@@ -8,10 +8,10 @@ An advanced, agentic resume screening pipeline that transforms unstructured resu
 
 ---
 
-## 🛠️ The Problem
+## The Problem
 Recruiters spend **~23 hours** screening resumes for a single hire. Most automated tools rely on primitive keyword matching, missing high-potential candidates who use different terminology.
 
-## 💡 The Solution: R1 Agent
+## The Solution: R1 Agent
 The **R1 Agent** is a multi-stack (TS/Python) intelligence layer that goes beyond keywords:
 - **Heuristic Parsing**: Advanced regex and pattern recognition for extracting education, experience, and certifications.
 - **Smart Evaluation**: Weighted scoring based on years of experience, skill proficiency, and education level.
@@ -20,7 +20,7 @@ The **R1 Agent** is a multi-stack (TS/Python) intelligence layer that goes beyon
 
 ---
 
-## 🚀 One-Click Install
+## One-Click Install
 
 ### TypeScript/React Stack
 ```bash
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🏃 How to Run
+## How to Run
 
 ### Development Mode
 ```bash
@@ -53,7 +53,7 @@ npm.cmd test
 
 ---
 
-## 📊 Results & JSON Output
+## Results & JSON Output
 The R1 Agent spits out a standardized JSON schema ready for any ATS integration:
 
 ```json
@@ -75,9 +75,9 @@ The R1 Agent spits out a standardized JSON schema ready for any ATS integration:
 
 ---
 
-## 🔗 Live Demo
+## Live Demo
 **Hosted on Streamlit; drop any resume PDF, get JSON back.**
 
 ---
 
-**Built with ❤️ for Master's Level Excellence.**
+**Built for professional-grade recruitment automation.**
