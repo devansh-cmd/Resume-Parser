@@ -40,7 +40,8 @@ class ResumeEvaluator {
             // Certifications
             hasCertifications: candidateData.certifications.length > 0,
             // Overall quality
-            resumeCompleteness: this.calculateCompleteness(candidateData)
+            resumeCompleteness: this.calculateCompleteness(candidateData),
+            candidateSkillNames: candidateData.skills.map(skill => skill.name.toLowerCase())
         };
     }
     /**
@@ -70,7 +71,8 @@ class ResumeEvaluator {
             reasons.push(`✓ Has required technical skills`);
         }
         else {
-            missing.push(`Missing required skills: ${requirements.requiredSkills.join(', ')}`);
+            const missingSkills = requirements.requiredSkills.filter(skill => !features.candidateSkillNames.includes(skill.toLowerCase()));
+            missing.push(`Missing required skills: ${missingSkills.join(', ')}`);
         }
         // Education evaluation (20% weight)
         const educationScore = this.evaluateEducation(features, requirements);
