@@ -5,17 +5,17 @@ import { ParsedResume, JobRequirements, ScreeningResult, ExtractedFeatures } fro
  * and generates screening results with pass/fail decisions
  */
 export class ResumeEvaluator {
-  
+
   /**
    * Evaluate candidate against job requirements
    */
   public evaluateAgainstCriteria(
-    candidateData: ParsedResume, 
+    candidateData: ParsedResume,
     jobRequirements: JobRequirements
   ): ScreeningResult {
     const features = this.extractEvaluationFeatures(candidateData);
     const evaluation = this.performEvaluation(features, jobRequirements);
-    
+
     return {
       candidateProfile: candidateData,
       screeningResult: evaluation.pass ? 'pass' : 'fail',
@@ -33,22 +33,22 @@ export class ResumeEvaluator {
     return {
       // Basic validation
       hasValidContact: this.hasValidContact(candidateData),
-      
+
       // Experience analysis
       totalExperience: this.calculateTotalExperience(candidateData.workExperience),
       hasRelevantExperience: this.hasRelevantExperience(candidateData.workExperience),
-      
+
       // Skills analysis
       skillMatch: this.analyzeSkillMatch(candidateData.skills),
       hasRequiredSkills: this.hasRequiredSkills(candidateData.skills),
-      
+
       // Education analysis
       educationLevel: this.determineEducationLevel(candidateData.education),
       hasRelevantEducation: this.hasRelevantEducation(candidateData.education),
-      
+
       // Certifications
       hasCertifications: candidateData.certifications.length > 0,
-      
+
       // Overall quality
       resumeCompleteness: this.calculateCompleteness(candidateData),
       candidateSkillNames: candidateData.skills.map(skill => skill.name.toLowerCase())
@@ -82,7 +82,7 @@ export class ResumeEvaluator {
     if (skillsScore.pass) {
       reasons.push(`✓ Has required technical skills`);
     } else {
-      const missingSkills = requirements.requiredSkills.filter(skill => 
+      const missingSkills = requirements.requiredSkills.filter(skill =>
         !features.candidateSkillNames.includes(skill.toLowerCase())
       );
       missing.push(`Missing required skills: ${missingSkills.join(', ')}`);
@@ -110,7 +110,7 @@ export class ResumeEvaluator {
 
     // Calculate confidence and final decision
     const confidence = totalScore > 0 ? (passScore / totalScore) : 0;
-    const pass = confidence >= 0.7; // 70% threshold
+    const pass = confidence >= 0.5; // 50% threshold
 
     return {
       pass,
@@ -127,11 +127,11 @@ export class ResumeEvaluator {
   private evaluateExperience(features: any, requirements: JobRequirements): any {
     const hasMinimumExperience = features.totalExperience >= requirements.minimumYearsOfExperience;
     const hasRelevantExperience = features.hasRelevantExperience;
-    
+
     let score = 0;
     if (hasMinimumExperience) score += 20;
     if (hasRelevantExperience) score += 10;
-    
+
     return {
       pass: hasMinimumExperience,
       score
@@ -144,11 +144,11 @@ export class ResumeEvaluator {
   private evaluateSkills(features: any, requirements: JobRequirements): any {
     const hasRequiredSkills = features.hasRequiredSkills;
     const skillMatchPercentage = features.skillMatch.percentage;
-    
+
     let score = 0;
     if (hasRequiredSkills) score += 25;
     if (skillMatchPercentage >= 50) score += 15;
-    
+
     return {
       pass: hasRequiredSkills,
       score
@@ -161,7 +161,7 @@ export class ResumeEvaluator {
   private evaluateEducation(features: any, requirements: JobRequirements): any {
     const educationLevel = features.educationLevel;
     const hasRelevantEducation = features.hasRelevantEducation;
-    
+
     const levelHierarchy = {
       'high_school': 1,
       'associate': 2,
@@ -172,13 +172,13 @@ export class ResumeEvaluator {
 
     const requiredLevel = levelHierarchy[requirements.requiredEducation.minimumDegree as keyof typeof levelHierarchy] || 0;
     const candidateLevel = levelHierarchy[educationLevel as keyof typeof levelHierarchy] || 0;
-    
+
     const meetsLevel = candidateLevel >= requiredLevel;
-    
+
     let score = 0;
     if (meetsLevel) score += 15;
     if (hasRelevantEducation) score += 5;
-    
+
     return {
       pass: meetsLevel,
       score
@@ -190,12 +190,12 @@ export class ResumeEvaluator {
    */
   private evaluateCertifications(features: any, requirements: JobRequirements): any {
     const hasCertifications = features.hasCertifications;
-    
+
     // If no certifications required, always pass
     if (!requirements.requiredCertifications || requirements.requiredCertifications.length === 0) {
       return { pass: true, score: 10 };
     }
-    
+
     return {
       pass: hasCertifications,
       score: hasCertifications ? 10 : 0
@@ -225,7 +225,7 @@ export class ResumeEvaluator {
     return workExperience.some(exp => {
       const title = exp.title.toLowerCase();
       const description = exp.description?.toLowerCase() || '';
-      return relevantKeywords.some(keyword => 
+      return relevantKeywords.some(keyword =>
         title.includes(keyword) || description.includes(keyword)
       );
     });
@@ -239,7 +239,7 @@ export class ResumeEvaluator {
     ];
 
     const candidateSkillNames = skills.map(skill => skill.name.toLowerCase());
-    const matchedSkills = allSkills.filter(skill => 
+    const matchedSkills = allSkills.filter(skill =>
       candidateSkillNames.includes(skill.toLowerCase())
     );
 
@@ -256,7 +256,7 @@ export class ResumeEvaluator {
     ];
 
     const candidateSkillNames = skills.map(skill => skill.name.toLowerCase());
-    return requiredSkills.some(skill => 
+    return requiredSkills.some(skill =>
       candidateSkillNames.includes(skill.toLowerCase())
     );
   }
@@ -277,7 +277,7 @@ export class ResumeEvaluator {
 
     for (const edu of education) {
       const degree = edu.degree.toLowerCase();
-      
+
       if (degree.includes('phd') || degree.includes('doctorate')) {
         if (degreeLevels.phd > highestLevelNum) {
           highestLevel = 'phd';
@@ -344,12 +344,12 @@ export class ResumeEvaluator {
    * Generate detailed evaluation report
    */
   public generateDetailedReport(
-    candidateData: ParsedResume, 
+    candidateData: ParsedResume,
     jobRequirements: JobRequirements
   ): any {
     const features = this.extractEvaluationFeatures(candidateData);
     const evaluation = this.performEvaluation(features, jobRequirements);
-    
+
     return {
       candidate: {
         name: candidateData.fullName,
