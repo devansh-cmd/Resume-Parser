@@ -20,7 +20,7 @@ export function parseResume(input: string | any): ParsedResume {
  */
 function parseRawResume(rawText: string): ParsedResume {
   const normalizedText = normalizeText(rawText);
-  
+
   return {
     fullName: extractFullName(normalizedText),
     email: extractEmail(normalizedText),
@@ -113,7 +113,7 @@ function extractPhone(text: string): string {
 function extractEducation(text: string): Education[] {
   const education: Education[] = [];
   const educationSection = extractSection(text, ['education', 'academic', 'degree']);
-  
+
   if (!educationSection) return education;
 
   // Look for degree patterns
@@ -136,7 +136,7 @@ function extractEducation(text: string): Education[] {
       const degree = match[0];
       const institution = findInstitution(educationSection, institutionPatterns);
       const year = extractYear(educationSection, yearPattern);
-      
+
       education.push({
         degree: degree.trim(),
         institution: institution || 'Unknown Institution',
@@ -155,7 +155,7 @@ function extractEducation(text: string): Education[] {
 function extractWorkExperience(text: string): WorkExperience[] {
   const experience: WorkExperience[] = [];
   const experienceSection = extractSection(text, ['experience', 'work', 'employment']);
-  
+
   if (!experienceSection) return experience;
 
   // Common job title keywords
@@ -173,7 +173,7 @@ function extractWorkExperience(text: string): WorkExperience[] {
     const title = match[0];
     const company = findCompany(experienceSection, companyPattern);
     const dates = extractDates(experienceSection, datePattern);
-    
+
     experience.push({
       title: title.trim(),
       company: company || 'Unknown Company',
@@ -194,7 +194,7 @@ function extractWorkExperience(text: string): WorkExperience[] {
 function extractSkills(text: string): Skill[] {
   const skills: Skill[] = [];
   const skillsSection = extractSection(text, ['skills', 'technical skills', 'competencies']);
-  
+
   if (!skillsSection) return skills;
 
   // Common technical skills
@@ -206,7 +206,7 @@ function extractSkills(text: string): Skill[] {
 
   const skillPattern = new RegExp(`(${technicalSkills.join('|')})`, 'gi');
   const matches = skillsSection.matchAll(skillPattern);
-  
+
   for (const match of matches) {
     skills.push({
       name: match[0],
@@ -224,12 +224,12 @@ function extractSkills(text: string): Skill[] {
 function extractCertifications(text: string): Certification[] {
   const certifications: Certification[] = [];
   const certSection = extractSection(text, ['certifications', 'certificates', 'credentials']);
-  
+
   if (!certSection) return certifications;
 
   const certPattern = /([A-Z][a-z\s]+(?:Certification|Certificate|Certified))/gi;
   const matches = certSection.matchAll(certPattern);
-  
+
   for (const match of matches) {
     certifications.push({
       name: match[0],
@@ -253,7 +253,7 @@ function extractSection(text: string, keywords: string[]): string | null {
 
   for (const line of lines) {
     const lowerLine = line.toLowerCase();
-    
+
     // Check if line contains section keyword
     if (keywords.some(keyword => lowerLine.includes(keyword))) {
       inSection = true;
@@ -261,8 +261,8 @@ function extractSection(text: string, keywords: string[]): string | null {
     }
 
     // Check if we've moved to next section
-    if (inSection && (lowerLine.includes('experience') || lowerLine.includes('education') || 
-        lowerLine.includes('skills') || lowerLine.includes('certifications'))) {
+    if (inSection && (lowerLine.includes('experience') || lowerLine.includes('education') ||
+      lowerLine.includes('skills') || lowerLine.includes('certifications'))) {
       break;
     }
 
@@ -312,8 +312,26 @@ function extractDates(text: string, pattern: RegExp): { start?: string, end?: st
 
 function calculateDuration(start?: string, end?: string): number {
   if (!start) return 0;
-  const startYear = parseInt(start);
-  const endYear = end ? parseInt(end) : new Date().getFullYear();
+
+  // Extract year from string (e.g., "2021-2023" or "2021")
+  const startMatch = start.match(/\d{4}/);
+  if (!startMatch) return 0;
+
+  const startYear = parseInt(startMatch[0]);
+  let endYear = new Date().getFullYear();
+
+  if (end) {
+    const endMatch = end.match(/\d{4}/);
+    if (endMatch) endYear = parseInt(endMatch[0]);
+  } else if (start.includes('-')) {
+    // If range is in the start string like "2021-2023"
+    const parts = start.split('-');
+    if (parts.length > 1) {
+      const endMatch = parts[1].match(/\d{4}/);
+      if (endMatch) endYear = parseInt(endMatch[0]);
+    }
+  }
+
   return (endYear - startYear) * 12; // Convert to months
 }
 
